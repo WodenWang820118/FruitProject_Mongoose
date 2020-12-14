@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 // issues: https://bit.ly/3gJOR3f 
 mongoose.connect('mongodb://localhost:27017/fruitsDB', {useNewUrlParser: true, useUnifiedTopology: true});
 
+//define schema
 const fruitsSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -22,38 +23,64 @@ const fruitsSchema = new mongoose.Schema({
 // the database will render it to the plural
 const Fruit = mongoose.model("Fruit", fruitsSchema);
 
-const kiwi = new Fruit({
-    name:"kiwi",
-    score:5,
-    review:"not bad"
-});
+// const kiwi = new Fruit({
+//     name:"kiwi",
+//     score:5,
+//     review:"not bad"
+// });
 
-const apple = new Fruit({
-    name:"apple",
-    score:7,
-    review: "solid"
-});
+// const apple = new Fruit({
+//     name:"apple",
+//     score:7,
+//     review: "solid"
+// });
 
-const banana = new Fruit({
-    name:"banana",
-    score:4,
-    review: "good starch source"
-});
+// const banana = new Fruit({
+//     name:"banana",
+//     score:4,
+//     review: "good starch source"
+// });
 
 // Fruit.insertMany([kiwi, apple, banana], function(err){
 //     if (err){ console.log(err);} else {console.log("upload successfully");}
 // });
 
-const fruit = new Fruit({
+
+// delete operation in the CRUD
+// Fruit.deleteOne({name:"apple"}, function(err){
+//     if(err) {console.log(err);} else {console.log("succcessfully delete the document");}
+// });
+
+const peach = new Fruit({
+    name:"peach",
     score:8,
     review:"sweet"
 });
 
-//fruit.save();
+//peach.save();
 
-Fruit.deleteOne({name:"apple"}, function(err){
-    if(err) {console.log(err);} else {console.log("succcessfully delete the document");}
+//define another schema connected to the fruitsSchema
+const personsSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    age: {
+        type: Number,
+        required: true
+    },
+    favoriteFruit: fruitsSchema
 });
+
+const Person = mongoose.model("Person", personsSchema);
+
+const john = new Person({
+    name: "John",
+    age: 37,
+    favoriteFruit: peach
+});
+
+john.save();
 
 Fruit.find(function(err, fruits){
     if (err){
